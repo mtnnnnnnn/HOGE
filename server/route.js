@@ -23,12 +23,15 @@ router.post('/upload',function(req,res){
   fs.writeFile(path,base64Data,'base64',function(err){
     if(err){ res.send(503,"書き込みエラー"); }
 
-    var outPath = "./public/storage/converted/"+fileName;
-    var dir = "/storage/converted/"+fileName;
-    var command = 'python ./converter/image.py ' + path + " " + outPath;
+    var outPath = "./public/storage/converted/"+fileName+".png";
+    var dir = "/storage/converted/"+fileName+".png";
+    var command = 'python ./converter/white.py ' + path + " " + outPath;
 
     exec(command, function(err, stdout, stderr){
-      if (err){res.send(503,"書き込みエラー");}
+      if (err){
+        console.log("error",err);
+        res.send(503,"書き込みエラー");
+      }
       console.log('finished',stdout,stderr);
       res.send(200,JSON.stringify({path:dir}));
     });

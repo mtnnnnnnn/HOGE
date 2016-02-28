@@ -2,8 +2,6 @@
 from PIL import Image
 import sys
 
-import sys # モジュール属性 argv を取得するため
-
 argvs = sys.argv
 
 #画像の読み込み
