@@ -3,6 +3,7 @@ import Enviroment from '../Enviroment/Enviroment';
 export default class FileUploader {
 
   constructor(public index: number) {
+
   }
 
   upload(url: string) {

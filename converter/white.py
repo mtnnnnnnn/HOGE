@@ -8,21 +8,21 @@ import sys
 if __name__ == '__main__':
 
     argvs = sys.argv
-    # inputPath = argvs[1]
-    # outputPath = argvs[2]
-    width = 800
-    height = 1200
-    isTransmission = True
+    inputPath = argvs[1]
+    outputPath = argvs[2]
+    # width = 800
+    # height = 1200
+    isTransmission = False
     # width = argv[3]
     # height = argvs[4]
     # threthold = argvs[5]
     # isTransmission = argvs[6]
 
-    # img_src = cv2.imread(argvs[1], 1)
-    img_src = cv2.imread("./image/IMG_0072.JPG", -1)
+    img_src = cv2.imread(argvs[1], -1)
+    # img_src = cv2.imread("./image/IMG_0072.JPG", -1)
 
     # 拡大縮小
-    img_src = cv2.resize(img_src,(width,height))
+    # img_src = cv2.resize(img_src,(width,height))
     img_width = img_src.shape[0]
     img_height = img_src.shape[1]
 
@@ -37,8 +37,7 @@ if __name__ == '__main__':
                                  cv2.THRESH_BINARY)
 
     # 出力する画像
-    output = np.array(Image.new('RGBA',(width,height)))
-
+    output = np.array(Image.new('RGBA',(img_width,img_height)))
 
     print "変換処理"
     for x in range(img_width):
@@ -51,8 +50,8 @@ if __name__ == '__main__':
 
     if isTransmission == False:
         print "書き出します"
-        # cv2.imwrite(argvs[2],img_src);
-        cv2.imwrite("./output.png",img_src);
+        cv2.imwrite(argvs[2],img_src);
+        # cv2.imwrite("./output.png",img_src);
     else:
         print "透過処理をします"
         CV_im_RGB = img_src[::1, :, ::-1].copy()
@@ -61,13 +60,14 @@ if __name__ == '__main__':
         for x in range(img_width):
             for y in range(img_height):
                 dots = img_dst[x][y]
-                r,g,b = output.getpixel((y,x))
-                a = 0
+                r,g,b,a = output.getpixel((y,x))
+                a = 255
                 # 透過
                 if dots > 250:
-                    a = 255
+                    a = 0
                 # IMG書き込み
                 output.putpixel((y,x),(r,g,b,a))
 
         print "書き出します"
         output.save("./output.png", "PNG")
+        output.save(argvs[2], "PNG")

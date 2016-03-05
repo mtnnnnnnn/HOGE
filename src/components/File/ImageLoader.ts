@@ -13,8 +13,6 @@ export default class ImageLoader {
       this.file.click();
 
       this.file.onchange = (e: any) => {
-        console.log("load");
-
         var files: FileList = e.target.files;
         console.log("files", files);
 

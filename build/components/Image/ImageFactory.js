@@ -17,6 +17,9 @@ var ImageFactory = (function () {
     };
     ImageFactory.prototype.fetchElement = function () {
     };
+    ImageFactory.prototype.getAllImage = function () {
+        return this.images;
+    };
     ImageFactory.prototype.removeAll = function () {
         for (var i = 0; i < this.element.childNodes.length; i++) {
             this.element.removeChild(this.element.childNodes[i]);

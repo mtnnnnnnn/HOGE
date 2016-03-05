@@ -4,7 +4,6 @@ var fs = require("fs");
 var path = require("path");
 var exec = require('child_process').exec;
 
-
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());

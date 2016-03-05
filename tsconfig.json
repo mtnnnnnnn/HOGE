@@ -24,9 +24,10 @@
   ],
   "files": [
     "./src/components/Enviroment/Enviroment.ts",
+    "./src/components/Enviroment/History.ts",
+    "./src/components/File/FileSaver.ts",
     "./src/components/File/FileUploader.ts",
     "./src/components/File/ImageLoader.ts",
-    "./src/components/File/LoaderManager.ts",
     "./src/components/HTML/InputWrapper.ts",
     "./src/components/Image/CanvasImage.ts",
     "./src/components/Image/ImageFactory.ts",

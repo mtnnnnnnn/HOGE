@@ -9,7 +9,6 @@ var ImageLoader = (function () {
         return new Promise(function (resolve, reject) {
             _this.file.click();
             _this.file.onchange = function (e) {
-                console.log("load");
                 var files = e.target.files;
                 console.log("files", files);
                 var images = [];

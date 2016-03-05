@@ -1,39 +1,119 @@
 import InputWrapper from '../HTML/InputWrapper';
 import FileUploader from '../File/FileUploader';
+import {EventEmitter} from 'events';
 
-export default class Setting {
+export default class Setting extends EventEmitter {
   element: HTMLElement = null;
-  button: HTMLElement = null;
+  reload: HTMLElement = null;
+  size: HTMLInputElement = null;
   callback: (data: any) => void;
+
+  width: number = null;
+  height: number = null;
+  scale: number = 1;
+
   constructor(public index: number, public url: string) {
+    super();
     this.createElement();
+  }
+
+  setDefaultSize(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+    this.reloadCanvasSize(width, height);
   }
 
   createElement() {
     this.element = document.createElement('div');
     this.element.className = 'Setting';
 
-    this.button = InputWrapper.createButton("更新");
-    this.button.className = "ReloadButton"
-    this.button.onclick = () => {
-      let uploader = new FileUploader(this.index);
-      uploader.upload(this.url).then((data) => {
-        console.log("Uploaded",data);
-        if (this.callback) {
-          this.callback(data);
-        }
-      });
+    //リロードボタン
+    this.createReloadButton();
+
+    //サイズ
+    this.createCanvasSize();
+
+    //解像度
+    this.createSizeSelecter();
+
+    //要素をアペンド
+    this.element.appendChild(this.reload);
+  }
+
+
+  createCanvasSize() {
+    let width = document.createElement('input');
+    width.type = "number";
+    width.className = "Canvas-Width";
+    width.id = "Canvas-Width-" + this.index;
+
+    let height = document.createElement('input');
+    height.type = "number";
+    height.className = "Canvas-Height";
+    height.id = "Canvas-Height-" + this.index;
+
+    width.onchange = () => {
+      this.emit("onChangeSize",parseFloat(width.value), parseFloat(height.value));
+    };
+    height.onchange = () => {
+      this.emit("onChangeSize",parseFloat(width.value), parseFloat(height.value));
     };
 
-    this.element.appendChild(this.button);
+    this.addListener("onChangeSize", (width: number, height: number) => {
+      this.reloadCanvasSize(width, height);
+    });
+
+    let size = document.createElement("div");
+    size.className = "Canvas-Size";
+    size.appendChild(width);
+    size.appendChild(height);
+    this.element.appendChild(size);
+  }
+  reloadCanvasSize(width: number, height: number) {
+    let _width = document.getElementById("Canvas-Width-" + this.index) as HTMLInputElement;
+    _width.value = Math.floor(width).toString();
+    let _height = document.getElementById("Canvas-Height-" + this.index) as HTMLInputElement;
+    _height.value = Math.floor(height).toString();
   }
 
-  setEvent(callback: (data: any) => void) {
-    this.callback = callback;
+  createSizeSelecter() {
+    this.size = document.createElement("input");
+    this.size.type = "range";
+    this.size.min = "0";
+    this.size.max = "1.5"
+    this.size.step = "0.01";
+
+    this.size.addEventListener("change", () => {
+      this.emit("onChangeSize", parseFloat(this.size.value) * this.width, parseFloat(this.size.value) * this.height);//TODO 設定値を4:3などいろいろと対応させる
+    });
+    this.element.appendChild(this.size);
   }
+
+
+
+  createReloadButton() {
+    this.reload = InputWrapper.createButton("更新");
+    this.reload.className = "btn"
+    this.reload.onclick = () => {
+      console.log("イメージを更新します");
+      let uploader = new FileUploader(this.index);
+      let canvas = document.getElementById("Canvas-" + this.index) as HTMLCanvasElement;
+      let data = canvas.toDataURL();
+      uploader.upload(data).then((data) => {
+        console.log("Uploaded", data);
+        this.emit("onLoadImage", data);
+      });
+    };
+  }
+
 
   getElement(): HTMLElement {
-    console.log("getElement");
     return this.element;
   }
+}
+
+
+interface Size {
+  width: number;
+  height: number;
 }

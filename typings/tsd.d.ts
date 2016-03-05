@@ -6,3 +6,5 @@
 /// <reference path="./webrtc/MediaStream.d.ts"/>
 /// <reference path="./promise/promise.d.ts"/>
 /// <reference path="./jqueryui/jqueryui.d.ts"/>
+/// <reference path="./jszip/jszip.d.ts"/>
+/// <reference path="FileSaver/FileSaver.d.ts"/>

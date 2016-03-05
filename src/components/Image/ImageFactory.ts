@@ -12,7 +12,7 @@ export default class ImageFactory {
 
 
   create(url: string) {
-    let image = new Image(this.images.length,url);
+    let image = new Image(this.images.length, url);
     this.images.push(image);
 
     //TODO 要素を接続
@@ -26,14 +26,15 @@ export default class ImageFactory {
   fetchElement() {
   }
 
+  getAllImage(): Image[] {
+    return this.images;
+  }
 
   removeAll() {
     for (let i = 0; i < this.element.childNodes.length; i++) {
       this.element.removeChild(this.element.childNodes[i]);
     }
   }
-
-
 
   static instance: ImageFactory;
   static getInstance(): ImageFactory {

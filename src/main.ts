@@ -3,10 +3,14 @@
 
 import ImageLoader from './components/File/ImageLoader';
 import ImageFactory from './components/Image/ImageFactory';
+import Enviroment from './components/Enviroment/Enviroment';
+import FileSaver from './components/File/FileSaver';
 
 window.onload = function() {
   let imageLoader = new ImageLoader();
+  let enviroment = new Enviroment();
 
+  let saver = new FileSaver();
 
   $('#plus').click(() => {
     imageLoader.load().then((images: string[]) => {

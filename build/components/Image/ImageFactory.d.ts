@@ -8,6 +8,7 @@ export default class ImageFactory {
     create(url: string): void;
     remove(index: number): void;
     fetchElement(): void;
+    getAllImage(): Image[];
     removeAll(): void;
     static instance: ImageFactory;
     static getInstance(): ImageFactory;
