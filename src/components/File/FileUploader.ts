@@ -1,4 +1,5 @@
 import Enviroment from '../Enviroment/Enviroment';
+import {ConvertSetting} from './ConvertSetting';
 
 export default class FileUploader {
 
@@ -6,12 +7,12 @@ export default class FileUploader {
 
   }
 
-  upload(url: string) {
+  upload(setting:ConvertSetting) {
     return new Promise<string>((resolve, reject) => {
       $.ajax({
         type: 'POST',
         url: Enviroment.UPLOAD_SERVER,
-        data: { img: url },
+        data: setting,
         dataType: "json",
       }).done((res) => {
         console.log("Sucess", res);

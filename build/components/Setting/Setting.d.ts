@@ -8,10 +8,11 @@ export default class Setting extends EventEmitter {
     callback: (data: any) => void;
     width: number;
     height: number;
-    scale: number;
+    isAlpha: boolean;
     constructor(index: number, url: string);
     setDefaultSize(width: number, height: number): void;
     createElement(): void;
+    createAlphaButton(): void;
     createCanvasSize(): void;
     reloadCanvasSize(width: number, height: number): void;
     createSizeSelecter(): void;

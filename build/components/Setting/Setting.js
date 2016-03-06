@@ -18,7 +18,7 @@ var Setting = (function (_super) {
         this.size = null;
         this.width = null;
         this.height = null;
-        this.scale = 1;
+        this.isAlpha = false;
         this.createElement();
     }
     Setting.prototype.setDefaultSize = function (width, height) {
@@ -33,10 +33,24 @@ var Setting = (function (_super) {
         this.createReloadButton();
         //サイズ
         this.createCanvasSize();
+        //透過のOn/Off
+        this.createAlphaButton();
         //解像度
         this.createSizeSelecter();
-        //要素をアペンド
-        this.element.appendChild(this.reload);
+    };
+    Setting.prototype.createAlphaButton = function () {
+        var _this = this;
+        var isAlpha = document.createElement("div");
+        var label = document.createElement("label");
+        label.innerText = "透過させるかどうか";
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.onchange = function (e) {
+            _this.isAlpha = e.target.checked;
+        };
+        isAlpha.appendChild(label);
+        isAlpha.appendChild(checkbox);
+        this.element.appendChild(isAlpha);
     };
     Setting.prototype.createCanvasSize = function () {
         var _this = this;
@@ -90,11 +104,18 @@ var Setting = (function (_super) {
             var uploader = new FileUploader_1.default(_this.index);
             var canvas = document.getElementById("Canvas-" + _this.index);
             var data = canvas.toDataURL();
-            uploader.upload(data).then(function (data) {
+            // let isAlpha =
+            var setting = {
+                img: data,
+                isAlpha: _this.isAlpha
+            };
+            console.log("画像を変換します", setting);
+            uploader.upload(setting).then(function (data) {
                 console.log("Uploaded", data);
                 _this.emit("onLoadImage", data);
             });
         };
+        this.element.appendChild(this.reload);
     };
     Setting.prototype.getElement = function () {
         return this.element;

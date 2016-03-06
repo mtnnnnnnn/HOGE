@@ -1,6 +1,8 @@
 import InputWrapper from '../HTML/InputWrapper';
 import FileUploader from '../File/FileUploader';
 import {EventEmitter} from 'events';
+import {ConvertSetting} from '../File/ConvertSetting';
+
 
 export default class Setting extends EventEmitter {
   element: HTMLElement = null;
@@ -10,7 +12,7 @@ export default class Setting extends EventEmitter {
 
   width: number = null;
   height: number = null;
-  scale: number = 1;
+  isAlpha: boolean = false;
 
   constructor(public index: number, public url: string) {
     super();
@@ -33,11 +35,29 @@ export default class Setting extends EventEmitter {
     //サイズ
     this.createCanvasSize();
 
+    //透過のOn/Off
+    this.createAlphaButton();
+
     //解像度
     this.createSizeSelecter();
 
-    //要素をアペンド
-    this.element.appendChild(this.reload);
+  }
+
+  createAlphaButton() {
+    let isAlpha = document.createElement("div");
+
+    let label: HTMLLabelElement = document.createElement("label");
+    label.innerText = "透過させるかどうか";
+
+    let checkbox: HTMLInputElement = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.onchange = (e: any) => {
+      this.isAlpha = e.target.checked;
+    };
+
+    isAlpha.appendChild(label);
+    isAlpha.appendChild(checkbox);
+    this.element.appendChild(isAlpha);
   }
 
 
@@ -53,10 +73,10 @@ export default class Setting extends EventEmitter {
     height.id = "Canvas-Height-" + this.index;
 
     width.onchange = () => {
-      this.emit("onChangeSize",parseFloat(width.value), parseFloat(height.value));
+      this.emit("onChangeSize", parseFloat(width.value), parseFloat(height.value));
     };
     height.onchange = () => {
-      this.emit("onChangeSize",parseFloat(width.value), parseFloat(height.value));
+      this.emit("onChangeSize", parseFloat(width.value), parseFloat(height.value));
     };
 
     this.addListener("onChangeSize", (width: number, height: number) => {
@@ -99,11 +119,20 @@ export default class Setting extends EventEmitter {
       let uploader = new FileUploader(this.index);
       let canvas = document.getElementById("Canvas-" + this.index) as HTMLCanvasElement;
       let data = canvas.toDataURL();
-      uploader.upload(data).then((data) => {
+      // let isAlpha =
+
+      let setting: ConvertSetting = {
+        img: data,
+        isAlpha: this.isAlpha
+      }
+      console.log("画像を変換します",setting);
+
+      uploader.upload(setting).then((data) => {
         console.log("Uploaded", data);
         this.emit("onLoadImage", data);
       });
     };
+    this.element.appendChild(this.reload);
   }
 
 

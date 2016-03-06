@@ -24,7 +24,7 @@ router.post('/upload',function(req,res){
 
     var outPath = "./public/storage/converted/"+fileName+".png";
     var dir = "/storage/converted/"+fileName+".png";
-    var command = 'python ./converter/white.py ' + path + " " + outPath;
+    var command = 'python ./converter/white.py ' + path + " " + outPath+" "+req.body;
 
     exec(command, function(err, stdout, stderr){
       if (err){
