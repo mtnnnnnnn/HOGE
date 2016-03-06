@@ -19,6 +19,10 @@ router.post('/upload',function(req,res){
   var base64Data = req.body.img.replace(/^data:image\/(jpeg|png|jpg);base64,/, "");
   var fileName = uuid()+checkExt(req.body.img);
   var path = "./public/storage/original/"+fileName;
+
+  res.header('Access-Control-Allow-Origin', '*');
+  console.log("[Upload]ファイルを受け取りました.");
+
   fs.writeFile(path,base64Data,'base64',function(err){
     if(err){ res.send(503,"書き込みエラー"); }
 

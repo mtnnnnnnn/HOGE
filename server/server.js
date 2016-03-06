@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var routes = require('./route.js');
+var corser = require("corser");
 
 var app = express();
 
@@ -19,6 +20,7 @@ app.use(logger('dev'));
 app.use(bodyParser({limit: '50mb'}));//ファイルサイズは調整するs
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(corser.create());
 app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
