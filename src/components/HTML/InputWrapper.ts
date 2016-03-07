@@ -5,6 +5,4 @@ export default class InputWrapper {
     element.value = value;
     return element;
   }
-
-
 }

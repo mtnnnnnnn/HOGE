@@ -11,6 +11,7 @@ if __name__ == '__main__':
     inputPath = argvs[1]
     outputPath = argvs[2]
     isAlpha = argvs[3]
+    print isAlpha
     if isAlpha == 'true':
         isTransmission = True
     else:
