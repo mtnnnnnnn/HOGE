@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
 router.post('/upload',function(req,res){
   var base64Data = req.body.img.replace(/^data:image\/(jpeg|png|jpg);base64,/, "");
   var fileName = uuid()+checkExt(req.body.img);
-  var path = "./public/storage/original/"+fileName;
+  var path = __dirname + "/public/storage/original/"+fileName;
 
   res.header('Access-Control-Allow-Origin', '*');
   console.log("[Upload]ファイルを受け取りました.");
@@ -26,10 +26,11 @@ router.post('/upload',function(req,res){
   fs.writeFile(path,base64Data,'base64',function(err){
     if(err){ res.send(503,"書き込みエラー"); }
 
-    var outPath = "./public/storage/converted/"+fileName+".png";
-    var dir = "/storage/converted/"+fileName+".png";
+    var outPath = __dirname + "/public/storage/converted/"+fileName+".png";
+    var dir = __dirname + "/storage/converted/"+fileName+".png";
     var isAlpha = req.body.isAlpha;
-    var command = 'python ./converter/white.py ' + path + " " + outPath+" "+isAlpha;
+    var python = __dirname + "/converter/white.py"
+    var command = 'python '+ python + " " + path + " " + outPath+" "+isAlpha;
 
     console.log("コマンド",command);
 
