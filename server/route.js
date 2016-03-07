@@ -28,7 +28,10 @@ router.post('/upload',function(req,res){
 
     var outPath = "./public/storage/converted/"+fileName+".png";
     var dir = "/storage/converted/"+fileName+".png";
-    var command = 'python ./converter/white.py ' + path + " " + outPath+" "+req.body;
+    var isAlpha = req.body.isAlpha;
+    var command = 'python ./converter/white.py ' + path + " " + outPath+" "+isAlpha;
+
+    console.log("コマンド",command);
 
     exec(command, function(err, stdout, stderr){
       if (err){

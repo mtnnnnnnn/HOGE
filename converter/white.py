@@ -10,13 +10,19 @@ if __name__ == '__main__':
     argvs = sys.argv
     inputPath = argvs[1]
     outputPath = argvs[2]
+    isAlpha = argvs[3]
+    if isAlpha == 'true':
+        isTransmission = True
+    else:
+        isTransmission = False
+
     # width = 800
     # height = 1200
     isTransmission = False
     # width = argv[3]
     # height = argvs[4]
     # threthold = argvs[5]
-    # isTransmission = argvs[6]
+
 
     img_src = cv2.imread(argvs[1], -1)
     # img_src = cv2.imread("./image/IMG_0072.JPG", -1)
