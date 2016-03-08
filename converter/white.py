@@ -11,11 +11,7 @@ if __name__ == '__main__':
     inputPath = argvs[1]
     outputPath = argvs[2]
     isAlpha = argvs[3]
-    print isAlpha
-    if isAlpha == 'true':
-        isTransmission = True
-    else:
-        isTransmission = False
+
 
     # width = 800
     # height = 1200
@@ -55,13 +51,13 @@ if __name__ == '__main__':
                 img_src[x][y][1] = 255
                 img_src[x][y][2] = 255
 
-    if isTransmission == False:
+    if isAlpha == "false":
         print "書き出します"
         cv2.imwrite(argvs[2],img_src);
         # cv2.imwrite("./output.png",img_src);
     else:
         print "透過処理をします"
-        CV_im_RGB = img_src[::1, :, ::-1].copy()
+        CV_im_RGB = img_src[::1, :, ::1].copy()
         output=Image.fromarray(CV_im_RGB)
 
         for x in range(img_width):
@@ -73,7 +69,7 @@ if __name__ == '__main__':
                 if dots > 250:
                     a = 0
                 # IMG書き込み
-                output.putpixel((y,x),(r,g,b,a))
+                output.putpixel((y,x),(b,g,r,a))
 
         print "書き出します"
         output.save("./output.png", "PNG")
