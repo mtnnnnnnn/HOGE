@@ -72,5 +72,5 @@ if __name__ == '__main__':
                 output.putpixel((y,x),(b,g,r,a))
 
         print "書き出します"
-        output.save("./output.png", "PNG")
+        # output.save("./output.png", "PNG")
         output.save(argvs[2], "PNG")

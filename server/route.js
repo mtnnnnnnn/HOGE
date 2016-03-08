@@ -36,7 +36,7 @@ router.post('/upload',function(req,res){
     exec(command, function(err, stdout, stderr){
       if (err){
         console.log("error",err);
-        res.send(503,"書き込みエラー");
+        res.send(503,"コンバートエラー");
       }
       console.log('finished',stdout,stderr);
       res.send(200,JSON.stringify({path:dir}));
