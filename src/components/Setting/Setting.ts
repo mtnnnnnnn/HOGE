@@ -2,7 +2,7 @@ import InputWrapper from '../HTML/InputWrapper';
 import FileUploader from '../File/FileUploader';
 import {EventEmitter} from 'events';
 import {ConvertSetting} from '../File/ConvertSetting';
-
+import Editer, {EditerMode} from './Editer';
 
 export default class Setting extends EventEmitter {
   element: HTMLElement = null;
@@ -13,6 +13,10 @@ export default class Setting extends EventEmitter {
   width: number = null;
   height: number = null;
   isAlpha: boolean = false;
+
+  editer: Editer = null;
+  editerMode: EditerMode = EditerMode.MOVE;
+  editerButton: HTMLInputElement = null;
 
   constructor(public index: number, public url: string) {
     super();
@@ -41,7 +45,38 @@ export default class Setting extends EventEmitter {
     //解像度
     this.createSizeSelecter();
 
+    //編集機能
+    this.createCanvasEditer();
+
   }
+
+
+  createCanvasEditer() {
+    this.editer = new Editer(this.index);
+
+    let editer = document.createElement("div");
+    editer.className = "EditerSelecter";
+
+    let move = InputWrapper.createRadioButton("MOVE", "Editer" + this.index);
+    let select = InputWrapper.createRadioButton("SELECT", "Editer" + this.index);
+    let erace = InputWrapper.createRadioButton("ERACE", "Editer" + this.index);
+
+    move.addEventListener("change", this.changeEditerHandler);
+    select.addEventListener("change", this.changeEditerHandler);
+    erace.addEventListener("change", this.changeEditerHandler);
+
+    editer.appendChild(move);
+    editer.appendChild(select);
+    editer.appendChild(erace);
+
+    this.element.appendChild(editer);
+  }
+
+  changeEditerHandler = (e: UIEvent) => {
+    let mode: string = $('input[name=Editer' + this.index + ']:checked').val();
+    this.editer.changeEditer(mode);
+  };
+
 
   createAlphaButton() {
     let isAlpha = document.createElement("div");
@@ -125,7 +160,7 @@ export default class Setting extends EventEmitter {
         img: data,
         isAlpha: this.isAlpha
       }
-      console.log("画像を変換します",setting);
+      console.log("画像を変換します", setting);
 
       uploader.upload(setting).then((data) => {
         console.log("Uploaded", data);

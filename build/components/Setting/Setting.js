@@ -7,9 +7,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 var InputWrapper_1 = require('../HTML/InputWrapper');
 var FileUploader_1 = require('../File/FileUploader');
 var events_1 = require('events');
+var Editer_1 = require('./Editer');
 var Setting = (function (_super) {
     __extends(Setting, _super);
     function Setting(index, url) {
+        var _this = this;
         _super.call(this);
         this.index = index;
         this.url = url;
@@ -19,6 +21,13 @@ var Setting = (function (_super) {
         this.width = null;
         this.height = null;
         this.isAlpha = false;
+        this.editer = null;
+        this.editerMode = Editer_1.EditerMode.MOVE;
+        this.editerButton = null;
+        this.changeEditerHandler = function (e) {
+            var mode = $('input[name=Editer' + _this.index + ']:checked').val();
+            _this.editer.changeEditer(mode);
+        };
         this.createElement();
     }
     Setting.prototype.setDefaultSize = function (width, height) {
@@ -37,6 +46,23 @@ var Setting = (function (_super) {
         this.createAlphaButton();
         //解像度
         this.createSizeSelecter();
+        //編集機能
+        this.createCanvasEditer();
+    };
+    Setting.prototype.createCanvasEditer = function () {
+        this.editer = new Editer_1.default(this.index);
+        var editer = document.createElement("div");
+        editer.className = "EditerSelecter";
+        var move = InputWrapper_1.default.createRadioButton("MOVE", "Editer" + this.index);
+        var select = InputWrapper_1.default.createRadioButton("SELECT", "Editer" + this.index);
+        var erace = InputWrapper_1.default.createRadioButton("ERACE", "Editer" + this.index);
+        move.addEventListener("change", this.changeEditerHandler);
+        select.addEventListener("change", this.changeEditerHandler);
+        erace.addEventListener("change", this.changeEditerHandler);
+        editer.appendChild(move);
+        editer.appendChild(select);
+        editer.appendChild(erace);
+        this.element.appendChild(editer);
     };
     Setting.prototype.createAlphaButton = function () {
         var _this = this;

@@ -85,7 +85,6 @@ export default class CanvasImage {
   }
 
   setCanvasSize(width: number, height: number) {
-    console.log("setCanvasSize", width, height, this.settings.scale);
     this.canvas.width = width;
     this.canvas.height = height;
     this.context.scale(width / this.canvas.width, height / this.canvas.height);

@@ -71,7 +71,6 @@ var CanvasImage = (function () {
         };
     };
     CanvasImage.prototype.setCanvasSize = function (width, height) {
-        console.log("setCanvasSize", width, height, this.settings.scale);
         this.canvas.width = width;
         this.canvas.height = height;
         this.context.scale(width / this.canvas.width, height / this.canvas.height);

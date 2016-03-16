@@ -31,6 +31,7 @@ if __name__ == '__main__':
 
     # グレイ
     img_gray = cv2.cvtColor(img_src, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite(argvs[2]+"gray.jpg",img_src);
     # 2値化
     thresh = 200
     max_pixel = 255
