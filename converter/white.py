@@ -65,10 +65,12 @@ if __name__ == '__main__':
             for y in range(img_height):
                 dots = img_dst[x][y]
                 r,g,b,a = output.getpixel((y,x))
-                a = 255
+
                 # 透過
-                if dots > 250:
+                if dots > 250 or a == 0:
                     a = 0
+                else:
+                    a = 255
                 # IMG書き込み
                 output.putpixel((y,x),(b,g,r,a))
 
