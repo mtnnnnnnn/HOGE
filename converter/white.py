@@ -4,6 +4,7 @@ from PIL import Image
 import cv2
 import numpy as np
 import sys
+import os.path
 
 if __name__ == '__main__':
 
@@ -11,7 +12,7 @@ if __name__ == '__main__':
     inputPath = argvs[1]
     outputPath = argvs[2]
     isAlpha = argvs[3]
-
+    isPng = False
 
     # width = 800
     # height = 1200
@@ -19,6 +20,11 @@ if __name__ == '__main__':
     # width = argv[3]
     # height = argvs[4]
     # threthold = argvs[5]
+
+
+    root, ext = os.path.splitext(argvs[1])
+    if ext is 'PNG' or 'png':
+        isPng = True
 
 
     img_src = cv2.imread(argvs[1], -1)
@@ -64,7 +70,11 @@ if __name__ == '__main__':
         for x in range(img_width):
             for y in range(img_height):
                 dots = img_dst[x][y]
-                r,g,b,a = output.getpixel((y,x))
+                if isPng is True:
+                    r,g,b,a = output.getpixel((y,x))
+                else :
+                    r,g,b = output.getpixel((y,x))
+                    a = 0;
 
                 # 透過
                 if dots > 250 or a == 0:
